@@ -2,3 +2,7 @@
   min-height: 80vh;
   min-height: 80dvh;
 }
+
+h3 {
+  padding: 0.5rem 0;
+}
