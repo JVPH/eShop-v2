@@ -66,7 +66,7 @@ const orderSchema = new mongoose.Schema({
   timestamps: true
 })
 
-userSchema.set('toJSON', {
+orderSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()
     delete returnedObject._id
@@ -74,6 +74,6 @@ userSchema.set('toJSON', {
   }
 })
 
-const User = mongoose.model('Order', orderSchema)
+const Order = mongoose.model('Order', orderSchema)
 
-export default User
+export default Order
