@@ -1,6 +1,7 @@
 import dotenv from 'dotenv'
 import expressAsyncErrors from 'express-async-errors'
 import express from 'express'
+import { unknownEndpoint, errorHandler } from './middleware/errorMiddleware.js'
 import connectDB from './config/db.js'
 
 import productsRouter from './routes/products.js'
@@ -16,6 +17,10 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api/products', productsRouter)
+
+app.use(unknownEndpoint)
+
+app.use(errorHandler)
 
 const PORT = process.env.PORT || 5000
 
