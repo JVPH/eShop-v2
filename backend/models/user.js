@@ -24,9 +24,7 @@ const userSchema = new mongoose.Schema({
 } )
 
 userSchema.set('toJSON', {
-  transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString()
-    delete returnedObject._id
+  transform: (document, returnedObject) => {    
     delete returnedObject.__v
     //the password hash should not be revealed
     delete returnedObject.passwordHash
