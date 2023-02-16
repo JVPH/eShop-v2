@@ -12,7 +12,7 @@ const Rating = ({ value, text, color }) => {
               value >= star
                 ? 'fa-sharp fa-solid fa-star'
                 : value >= star - 0.5
-                  ? 'fa-sharp fa-solid fa-star-half'
+                  ? 'fa-solid fa-star-half-stroke'
                   : 'fa-sharp fa-regular fa-star'
             }
           />
