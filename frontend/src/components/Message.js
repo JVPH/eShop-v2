@@ -1,12 +1,9 @@
 import Alert from 'react-bootstrap/Alert'
 
 const Message = (props) => (
-  <Alert variant={props.variant} dismissible>
-    <Alert.Heading>{props.heading}</Alert.Heading>
-    <p>
-      {console.log(props.children)}
-      {props.children}
-    </p>
+  <Alert variant={props.variant} >
+    {/* <Alert.Heading>{props.heading}</Alert.Heading> */}
+    {props.children}
   </Alert>
 )
 

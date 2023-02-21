@@ -1,18 +1,37 @@
 import { useParams } from 'react-router-dom'
 import { useGetProductByIdQuery } from '../features/api/apiSlice'
-import { Row, Col , Image, ListGroup, Card, Button } from 'react-bootstrap'
+import { useDispatch } from 'react-redux'
+import { addedToCart } from '../features/cartSlice'
+import { useState } from 'react'
+import { Row, Col, Image, ListGroup, Card, Button, Form } from 'react-bootstrap'
 import Loader from '../components/Loader'
 import Rating from '../components/Rating'
+import Message from '../components/Message'
 
 
 const ProductScreen = () => {
-
+  const [qty, setQty] = useState(1)
   const { id } = useParams()
 
   const { data: product, error, isLoading } = useGetProductByIdQuery(`${id}`)
+  const dispatch = useDispatch()
+
+  const handleAddToCart = (product, qty) => {
+    dispatch(addedToCart({
+      _id: product._id,
+      name: product.name,
+      image: product.image,
+      price: product.price,
+      countInStock: product.countInStock,
+      qty
+    }))
+  }
 
   if(error){
-    return (<>Oh no, there was an error</>)
+    return (
+      <Message variant='danger' heading='Oh snap! You got an error!'>
+        {error.data.message}
+      </Message>)
   }
 
   if(isLoading){
@@ -61,9 +80,24 @@ const ProductScreen = () => {
                   </Col>
                 </Row>
               </ListGroup.Item>
+              {product.countInStock > 0 && (
+                <ListGroup.Item>
+                  <Row>
+                    <Col>Qty</Col>
+                    <Col>
+                      <Form.Control as='select' onChange={(e) =>
+                      setQty(Number(e.target.value))}>
+                        {[...Array(product.countInStock).keys()].map(x => (
+                          <option key={x+1} value={x+1}>{x+1}</option>
+                        ))}
+                      </Form.Control>
+                    </Col>
+                  </Row>
+                </ListGroup.Item>
+              )}
               <ListGroup.Item>
                 <div className='d-grid gap-2'>
-                  <Button type='button' disabled={product.countInStock === 0}>
+                  <Button type='button' disabled={product.countInStock === 0} onClick={() => handleAddToCart(product, qty)}>
                     Add to cart
                   </Button>
                 </div>
