@@ -5,6 +5,7 @@ import { unknownEndpoint, errorHandler } from './middleware/errorMiddleware.js'
 import connectDB from './config/db.js'
 
 import productRouter from './routes/product.js'
+import userRouter from './routes/user.js'
 
 dotenv.config()
 
@@ -12,11 +13,15 @@ connectDB()
 
 const app = express()
 
+app.use(express.json())
+
 app.get('/', (req, res) => {
   res.send('Api is running...')
 })
 
 app.use('/api/products', productRouter)
+
+app.use('/api/users', userRouter)
 
 app.use(unknownEndpoint)
 
