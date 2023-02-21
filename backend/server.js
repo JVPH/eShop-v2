@@ -1,10 +1,10 @@
 import dotenv from 'dotenv'
-import expressAsyncErrors from 'express-async-errors'
+import 'express-async-errors'
 import express from 'express'
 import { unknownEndpoint, errorHandler } from './middleware/errorMiddleware.js'
 import connectDB from './config/db.js'
 
-import productsRouter from './routes/products.js'
+import productRouter from './routes/product.js'
 
 dotenv.config()
 
@@ -16,7 +16,7 @@ app.get('/', (req, res) => {
   res.send('Api is running...')
 })
 
-app.use('/api/products', productsRouter)
+app.use('/api/products', productRouter)
 
 app.use(unknownEndpoint)
 
