@@ -28,6 +28,14 @@ userSchema.methods.matchPassword = async function(password) {
   return await bcrypt.compare(password, this.passwordHash)
 }
 
+userSchema.pre('save', async function (next) {
+  if(!this.isModified('passwordHash')){
+    next()
+  }
+  const salt = await bcrypt.genSalt(10)
+  this.passwordHash = await bcrypt.hash(this.passwordHash, salt)
+})
+
 userSchema.set('toJSON', {
   transform: (document, returnedObject) => {    
     delete returnedObject.__v
