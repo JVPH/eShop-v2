@@ -1,7 +1,17 @@
+import { useSelector, useDispatch } from 'react-redux'
+import { removedCredentials } from '../features/authSlice'
 import { LinkContainer } from 'react-router-bootstrap'
-import { Nav, Navbar, Container } from 'react-bootstrap'
+import { Nav, Navbar, Container, NavDropdown } from 'react-bootstrap'
 
 const Header = () => {
+
+  const { userInfo } = useSelector(state => state.auth)
+  const dispatch = useDispatch()
+
+  const logoutHandler = () => {
+    dispatch(removedCredentials())
+  }
+
   return (
     <header>
       <Navbar bg="primary" variant='dark' expand="lg" collapseOnSelect >
@@ -15,9 +25,20 @@ const Header = () => {
               <LinkContainer to={'/cart'}>
                 <Nav.Link><i className="fa-solid fa-cart-shopping"></i> Cart</Nav.Link>
               </LinkContainer>
-              <LinkContainer to={'/login'}>
+              {userInfo ? (
+                <NavDropdown title={userInfo.name} id='username'>
+                  <LinkContainer to='/profile'>
+                    <NavDropdown.Item>Profile</NavDropdown.Item>
+                  </LinkContainer>
+                  <NavDropdown.Item onClick={logoutHandler}>
+                    Logout
+                  </NavDropdown.Item>
+                </NavDropdown>
+              )
+              :
+              <LinkContainer to = { '/login' }>
                 <Nav.Link><i className="fa-solid fa-user"></i> Sign In</Nav.Link>
-              </LinkContainer>
+            </LinkContainer>}
             </Nav>
           </Navbar.Collapse>
         </Container>
