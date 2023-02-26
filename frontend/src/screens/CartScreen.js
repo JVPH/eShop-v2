@@ -5,9 +5,25 @@ import Message from '../components/Message'
 import { updatedQuantity, removedFromCart } from '../features/cartSlice'
 
 const CartScreen = () => {
-  const cart = useSelector((state) => state.cart)
-  const { cartItems }  = cart
+
   const dispatch = useDispatch()
+
+  const { cartItems } = useSelector((state) => state.cart)
+
+  const { totalQuantity, totalPrice } = cartItems.reduce(
+    (accumulator, currentValue) => {
+      const { price, qty } = currentValue
+      accumulator.totalQuantity += qty
+      accumulator.totalPrice += (price * qty)
+      return accumulator
+    },
+    { totalQuantity: 0, totalPrice: 0 }
+  )
+
+  const checkoutHandler = () => {
+    console.log('Inside checkout handler...')
+  }
+
 
   const removeFromCartHandler = (id) => {
       dispatch(removedFromCart(id))
@@ -51,9 +67,27 @@ const CartScreen = () => {
           </ListGroup>
          )}
        </Col>
-       <Col md={2}>
-       </Col>
-       <Col md={2}>
+       <Col md={4}>
+        <Card className='p-2'>
+          <ListGroup variant='flush'>
+            <ListGroup.Item>
+              <h2>
+                Subtotal ({totalQuantity }
+                {' '}items):
+              </h2>
+              <h4>
+                ${parseFloat(totalPrice.toFixed(2))}
+              </h4>
+            </ListGroup.Item>
+            <ListGroup.Item>
+              <div className='d-grid gap-2'>
+                <Button type='button' className='btn-block' disabled={cartItems.length === 0} onClick={checkoutHandler}>
+                  Proceed to checkout
+                </Button>
+              </div>
+            </ListGroup.Item>
+          </ListGroup>
+        </Card>
        </Col>
      </Row>
    )
