@@ -18,10 +18,17 @@ export const api = createApi({
         method: 'POST',
         body: credentials
       })
+    }),
+    register: build.mutation({
+      query: (newUserInfo) => ({
+        url: '/api/users',
+        method: 'POST',
+        body: newUserInfo
+      })
     })
 
 
   })
 })
 
-export const { useGetProductsQuery, useGetProductByIdQuery, useLoginMutation } = api
+export const { useGetProductsQuery, useGetProductByIdQuery, useLoginMutation, useRegisterMutation } = api
