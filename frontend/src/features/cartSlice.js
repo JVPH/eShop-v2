@@ -3,9 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   cartItems: localStorage.getItem('cartItems')
     ? JSON.parse(localStorage.getItem('cartItems'))
-    : [],
-  cartTotalQuantity: 0,
-  cartTotalAmount: 0
+    : []
 }
 
 const cartSlice = createSlice({
@@ -39,7 +37,7 @@ const cartSlice = createSlice({
       const itemIndex = state.cartItems.findIndex((item) => item._id === id)
       state.cartItems.splice(itemIndex, 1)
       localStorage.setItem('cartItems', JSON.stringify(state.cartItems))
-    }
+    },
   }
 })
 
