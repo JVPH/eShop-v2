@@ -24,8 +24,8 @@ const authUser = async (req, res) => {
   }
 }
 
-// @desc Auth user and get token
-// @route POST /api/users/login
+// @desc Register user and get token
+// @route POST /api/users/
 // @access Public
 const registerUser = async (req, res) => {
   const { name, email, password } = req.body
@@ -70,7 +70,42 @@ const getUserProfile = async (req, res) => {
       email: user.email,
       isAdmin: user.isAdmin
     })
+  } else {
+    res.status(404)
+    throw new Error('User not found')
   }
 }
 
-export { authUser, registerUser ,getUserProfile }
+// @desc Update user profile
+// @route PUT /api/users/profile
+// @access Private
+const updateUserProfile = async (req, res) => {
+  const user = req.user
+
+  
+
+  if (user) {
+    user.name = req.body.name || user.name
+    user.email = req.body.email || user.email
+    if(req.body.password){
+      console.log(req.body.password, user.passwordHash)
+      user.passwordHash = req.body.password
+    }
+
+    const updatedUser = await user.save()
+
+    res.json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      isAdmin: updatedUser.isAdmin,
+      token: generateToken(updatedUser._id)
+    })
+
+  } else {
+    res.status(404)
+    throw new Error('User not found')
+  }
+}
+
+export { authUser, registerUser , getUserProfile, updateUserProfile }
