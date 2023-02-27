@@ -3,7 +3,16 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 export const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: '',
-    // prepareHeaders: (headers, )
+    prepareHeaders: (headers, { getState }) => {
+      const token = getState().auth.token
+
+      // If we have a token set in state, let's assume that we should be passing it.
+      if (token) {
+        headers.set('authorization', `Bearer ${token}`)
+      }
+
+      return headers
+    }
   }),
   endpoints: build => ({
     getProducts: build.query({
@@ -25,10 +34,18 @@ export const api = createApi({
         method: 'POST',
         body: newUserInfo
       })
+    }),
+    updateUserProfile: build.mutation({
+      query: (updatedUserInfo) => ({
+        url: '/api/users/profile',
+        method: 'PUT',
+        body: updatedUserInfo
+      })
+    }),
+    getUserProfile: build.query({
+      query: (id) => `/api/users/${id}`
     })
-
-
   })
 })
 
-export const { useGetProductsQuery, useGetProductByIdQuery, useLoginMutation, useRegisterMutation } = api
+export const { useGetProductsQuery, useGetProductByIdQuery, useLoginMutation, useRegisterMutation, useGetUserProfileQuery, useUpdateUserProfileMutation } = api
