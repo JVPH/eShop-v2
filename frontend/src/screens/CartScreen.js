@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Row, Col, Image, ListGroup, Card, Button, Form } from 'react-bootstrap'
 import Message from '../components/Message'
 import { updatedQuantity, removedFromCart } from '../features/cartSlice'
@@ -7,7 +8,7 @@ import { updatedQuantity, removedFromCart } from '../features/cartSlice'
 const CartScreen = () => {
 
   const dispatch = useDispatch()
-
+  const navigate = useNavigate()
   const { cartItems } = useSelector((state) => state.cart)
 
   const { totalQuantity, totalPrice } = cartItems.reduce(
@@ -21,14 +22,14 @@ const CartScreen = () => {
   )
 
   const checkoutHandler = () => {
-    console.log('Inside checkout handler...')
+    navigate('/login?redirect=shipping')
   }
 
 
   const removeFromCartHandler = (id) => {
       dispatch(removedFromCart(id))
   }
-  console.log(cartItems)
+
    return (
      <Row>
        <Col md={8}>

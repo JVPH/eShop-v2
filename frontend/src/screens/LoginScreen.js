@@ -2,7 +2,7 @@ import { useLoginMutation } from '../features/api/apiSlice'
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setCredentials } from '../features/authSlice'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 // import Loader from '../components/Loader'
 import Message from '../components/Message'
 import FormContainer from '../components/FormContainer'
@@ -15,12 +15,15 @@ const LoginScreen = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { token } = useSelector((state) => state.auth)
+  const [searchParams] = useSearchParams()
+
+  const redirect = searchParams.get('redirect') || '/'
 
   useEffect(() => {
     if (token) {
-      navigate('/')
+      navigate(redirect)
     }
-  }, [token, navigate])
+  }, [token, navigate, redirect])
 
   const submitHandler = async (e) => {
     e.preventDefault()
@@ -78,7 +81,10 @@ const LoginScreen = () => {
       </Form>
       <Row className='py-3'>
         <Col>
-          New Customer? <Button onClick={() => navigate('/register')}>Register</Button>
+          New Customer? <Button onClick={() => {
+            const uri = redirect ? `/register?redirect=${redirect}` : '/register'
+            navigate(uri)
+          }}>Register</Button>
         </Col>
       </Row>
     </FormContainer>
