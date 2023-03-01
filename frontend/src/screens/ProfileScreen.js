@@ -1,32 +1,21 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useUpdateUserProfileMutation } from '../features/api/apiSlice'
 import { Form, Button, Row, Col } from 'react-bootstrap'
 import { setCredentials } from '../features/authSlice'
-import { useNavigate } from 'react-router-dom'
 import Message from '../components/Message'
 
 
 const ProfileScreen = () => {
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
+  const { userInfo } = useSelector(state => state.auth)
+
+  const [name, setName] = useState(userInfo.name)
+  const [email, setEmail] = useState(userInfo.email)
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [message, setMessage] = useState(null)
   const [updateUserProfile, { isLoading, isError, error, isSuccess }] = useUpdateUserProfileMutation()
   const dispatch = useDispatch()
-  const navigate = useNavigate()
-
-  const { userInfo } = useSelector(state => state.auth)
-
-  useEffect(() => {
-    if(!userInfo) {
-      navigate('/login')
-    }else {
-      setName(userInfo.name)
-      setEmail(userInfo.email)
-    }
-  }, [navigate, userInfo])
 
   const submitHandler = async (e) => {
     e.preventDefault()
@@ -35,7 +24,6 @@ const ProfileScreen = () => {
     }
     try {
       const result = await updateUserProfile({ name, email, password })
-      console.log('Result: ', result)
       if (result.data) {
         dispatch(setCredentials(result.data))
       }
