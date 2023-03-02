@@ -51,8 +51,19 @@ export const api = createApi({
         method: 'POST',
         body: orderInfo
       })
+    }),
+    getOrderById: build.query({
+      query: (orderId) => `/api/orders/${orderId}`
     })
   })
 })
 
-export const { useGetProductsQuery, useGetProductByIdQuery, useLoginMutation, useRegisterMutation, useGetUserProfileQuery, useUpdateUserProfileMutation, useAddOrderMutation } = api
+export const { useGetProductsQuery,
+  useGetProductByIdQuery,
+  useLoginMutation,
+  useRegisterMutation,
+  useGetUserProfileQuery,
+  useUpdateUserProfileMutation,
+  useAddOrderMutation,
+  useGetOrderByIdQuery
+} = api

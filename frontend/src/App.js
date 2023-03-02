@@ -12,6 +12,7 @@ import ShippingScreen from './screens/ShippingScreen'
 import PaymentScreen from './screens/PaymentScreen'
 import PlaceOrderScreen from './screens/PlaceOrderScreen'
 import PrivateRoute from './utils/PrivateRoute'
+import OrderScreen from './screens/OrderScreen'
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
       <main className='main py-3'>
         <Container>
           <Routes>
+            <Route path='/order/:id' element={<PrivateRoute><OrderScreen /></PrivateRoute>} />
             <Route path='/placeorder' element={<PlaceOrderScreen />} />
             <Route path='/register' element={<RegisterScreen />} />
             <Route path='/login' element={<LoginScreen />} />
