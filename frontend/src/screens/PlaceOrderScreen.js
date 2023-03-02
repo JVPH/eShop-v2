@@ -134,7 +134,7 @@ const PlaceOrderScreen = () => {
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
-                {isError && <Message variant='danger'>{error}</Message>}
+                {isError && <Message variant='danger'>{error.data.message}</Message>}
               </ListGroup.Item>
               <ListGroup.Item>
                 <div className='d-grid gap-2'>
