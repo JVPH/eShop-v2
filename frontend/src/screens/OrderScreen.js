@@ -2,14 +2,19 @@ import { useParams } from 'react-router-dom'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { Link } from 'react-router-dom'
+import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js'
 import { Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
-import { useGetOrderByIdQuery } from '../features/api/apiSlice'
+import { useGetOrderByIdQuery, useUpdateOrderToPaidMutation } from '../features/api/apiSlice'
 
 const OrderScreen = () => {
 
   const { id } = useParams()
 
   const { data: orderDetails, error, isLoading } = useGetOrderByIdQuery(`${id}`)
+
+  const [updateOrderToPaid, { data: updatedOrder, isError, error: errorPay, isSuccess }] = useUpdateOrderToPaidMutation()
+
+  const [{ options, isPending }, dispatch] = usePayPalScriptReducer()
 
   if (error) {
     return (
@@ -21,6 +26,12 @@ const OrderScreen = () => {
   if (isLoading) {
     return (<Loader />)
   }
+
+  const paypalSuccessHandler = (paymentResult) => {
+    updateOrderToPaid( { orderId: orderDetails._id, paymentResult } )
+  }
+
+  console.log(orderDetails.totalPrice)
 
   return (
     <>
@@ -106,6 +117,37 @@ const OrderScreen = () => {
                   <Col>Total</Col>
                   <Col>${orderDetails.totalPrice}</Col>
                 </Row>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                {!orderDetails.isPaid && (
+                  isPending ? <Loader />: (
+                    <>
+                      <PayPalButtons
+                        style={{ layout: 'vertical' }}
+                        createOrder={(data, actions) => {
+                          return actions.order.create({
+                            purchase_units: [
+                              {
+                                amount: {
+                                  value: `${orderDetails.totalPrice}`,
+                                },
+                              },
+                            ],
+                          })
+                        }}
+                        onApprove={(data, actions) => {
+                          return actions.order.capture().then((details) => {
+                            console.log(details)
+                            paypalSuccessHandler(details)
+                            const name = details.payer.name.given_name
+                            alert(`Transaction completed by ${name}`)
+                          })
+                        }}
+                      />
+                    </>
+                  )
+                )
+                }
               </ListGroup.Item>
             </ListGroup>
           </Card>

@@ -54,7 +54,14 @@ export const api = createApi({
     }),
     getOrderById: build.query({
       query: (orderId) => `/api/orders/${orderId}`
-    })
+    }),
+    updateOrderToPaid: build.mutation({
+      query: ({ orderId, paymentResult }) => ({
+        url: `/api/orders/${orderId}/pay`,
+        method: 'PUT',
+        body: paymentResult
+      })
+    }),
   })
 })
 
@@ -65,5 +72,6 @@ export const { useGetProductsQuery,
   useGetUserProfileQuery,
   useUpdateUserProfileMutation,
   useAddOrderMutation,
-  useGetOrderByIdQuery
+  useGetOrderByIdQuery,
+  useUpdateOrderToPaidMutation,
 } = api
