@@ -29,7 +29,6 @@ const LoginScreen = () => {
     e.preventDefault()
     try {
       const result = await login({ email, password })
-      console.log('Result: ', result)
       if (result.data) {
         dispatch(setCredentials(result.data))
         navigate('/')
