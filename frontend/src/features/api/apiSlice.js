@@ -62,6 +62,9 @@ export const api = createApi({
         body: paymentResult
       })
     }),
+    getUserOrders: build.query({
+      query: () => '/api/orders/my-orders'
+    })
   })
 })
 
@@ -74,4 +77,5 @@ export const { useGetProductsQuery,
   useAddOrderMutation,
   useGetOrderByIdQuery,
   useUpdateOrderToPaidMutation,
+  useGetUserOrdersQuery
 } = api

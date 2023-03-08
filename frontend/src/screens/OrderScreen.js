@@ -31,8 +31,6 @@ const OrderScreen = () => {
     updateOrderToPaid( { orderId: orderDetails._id, paymentResult } )
   }
 
-  console.log(orderDetails.totalPrice)
-
   return (
     <>
       <h1>Order {orderDetails._id}</h1>
@@ -139,8 +137,8 @@ const OrderScreen = () => {
                           return actions.order.capture().then((details) => {
                             console.log(details)
                             paypalSuccessHandler(details)
-                            const name = details.payer.name.given_name
-                            alert(`Transaction completed by ${name}`)
+                            // const name = details.payer.name.given_name
+                            // alert(`Transaction completed by ${name}`)
                           })
                         }}
                       />
