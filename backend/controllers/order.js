@@ -44,14 +44,12 @@ const addOrderItems = async(req, res) => {
 const getOrderById = async(req, res) => {
   const order = await Order.findById(req.params.id).populate('user', 'name email')
 
-  if(order) {
+  if (order && order.user._id.toString() === req.user._id.toString()) {
     res.json(order)
   } else {
     res.status(404)
     throw new Error('Order not found')
   }
-
-
 }
 
 // @desc Get order by id

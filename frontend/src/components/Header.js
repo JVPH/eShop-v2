@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { removedCredentials } from '../features/authSlice'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Nav, Navbar, Container, NavDropdown } from 'react-bootstrap'
+import { api } from '../features/api/apiSlice'
 
 const Header = () => {
 
@@ -10,6 +11,7 @@ const Header = () => {
 
   const logoutHandler = () => {
     dispatch(removedCredentials())
+    dispatch(api.util.resetApiState())
   }
 
   return (
