@@ -14,9 +14,10 @@ export const api = createApi({
       return headers
     }
   }),
+  tagTypes: ['Product', 'User', 'Order'],
   endpoints: build => ({
     getProducts: build.query({
-      query: () => '/api/products'
+      query: () => '/api/products',
     }),
     getProductById: build.query({
       query: productId => `/api/products/${productId}`
@@ -43,7 +44,8 @@ export const api = createApi({
       })
     }),
     getUserProfile: build.query({
-      query: (id) => `/api/users/${id}`
+      query: (id) => `/api/users/${id}`,
+      providesTags: ['User']
     }),
     addOrder: build.mutation({
       query: (orderInfo) => ({
@@ -53,7 +55,8 @@ export const api = createApi({
       })
     }),
     getOrderById: build.query({
-      query: (orderId) => `/api/orders/${orderId}`
+      query: (orderId) => `/api/orders/${orderId}`,
+      providesTags: ['Order']
     }),
     updateOrderToPaid: build.mutation({
       query: ({ orderId, paymentResult }) => ({
@@ -63,7 +66,12 @@ export const api = createApi({
       })
     }),
     getUserOrders: build.query({
-      query: () => '/api/orders/my-orders'
+      query: () => '/api/orders/my-orders',
+      providesTags: ['Order']
+    }),
+    getAllUsers: build.query({
+      query: () => '/api/users',
+      providesTags: ['User']
     })
   })
 })
@@ -77,5 +85,6 @@ export const { useGetProductsQuery,
   useAddOrderMutation,
   useGetOrderByIdQuery,
   useUpdateOrderToPaidMutation,
-  useGetUserOrdersQuery
+  useGetUserOrdersQuery,
+  useGetAllUsersQuery
 } = api
