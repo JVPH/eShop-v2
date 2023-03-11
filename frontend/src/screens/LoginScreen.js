@@ -1,4 +1,4 @@
-import { useLoginMutation } from '../features/api/apiSlice'
+import { useLoginMutation, api } from '../features/api/apiSlice'
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setCredentials } from '../features/authSlice'
@@ -21,9 +21,10 @@ const LoginScreen = () => {
 
   useEffect(() => {
     if (token) {
+      dispatch(api.util.invalidateTags(['User', 'Order']))
       navigate(redirect)
     }
-  }, [token, navigate, redirect])
+  }, [token, navigate, redirect, dispatch])
 
   const submitHandler = async (e) => {
     e.preventDefault()
