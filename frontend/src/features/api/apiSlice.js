@@ -63,7 +63,8 @@ export const api = createApi({
         url: `/api/orders/${orderId}/pay`,
         method: 'PUT',
         body: paymentResult
-      })
+      }),
+      invalidatesTags: ['Order']
     }),
     getUserOrders: build.query({
       query: () => '/api/orders/my-orders',
@@ -72,6 +73,13 @@ export const api = createApi({
     getAllUsers: build.query({
       query: () => '/api/users',
       providesTags: ['User']
+    }),
+    deleteUserById: build.mutation({
+      query: (id) => ({
+        url: `/api/users/${id}`,
+        method: 'DELETE'
+      }),
+      invalidatesTags: ['User']
     })
   })
 })
@@ -86,5 +94,6 @@ export const { useGetProductsQuery,
   useGetOrderByIdQuery,
   useUpdateOrderToPaidMutation,
   useGetUserOrdersQuery,
-  useGetAllUsersQuery
+  useGetAllUsersQuery,
+  useDeleteUserByIdMutation
 } = api

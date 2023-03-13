@@ -1,6 +1,7 @@
 import { useGetAllUsersQuery } from '../features/api/apiSlice'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Table, Button } from 'react-bootstrap'
+import { useDeleteUserByIdMutation } from '../features/api/apiSlice'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 
@@ -8,8 +9,10 @@ const UserListScreen = () => {
 
   const { data: users, isLoading, error } = useGetAllUsersQuery()
 
-  const deleteHandler = () => {
-    console.log('deleting...')
+  const [deleteUserById, { isLoading: deleteUserIsLoading, isError, error: deleteUserError }] = useDeleteUserByIdMutation()
+
+  const deleteHandler = (id) => {
+    deleteUserById(id)
   }
 
   return (
@@ -43,7 +46,7 @@ const UserListScreen = () => {
                       <i className='fa-solid fa-pen-to-square'></i>
                     </Button>
                   </LinkContainer>
-                  <Button variant='danger' size='sm' onClick={() => deleteHandler(user._id)}>
+                  <Button variant='danger' size='sm' disabled={deleteUserIsLoading} onClick={() => deleteHandler(user._id)}>
                     <i className='fa-solid fa-trash'></i>
                   </Button>
                 </td>
