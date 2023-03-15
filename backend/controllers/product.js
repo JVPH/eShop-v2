@@ -36,8 +36,55 @@ const deleteProduct = async (req, res) => {
   res.json(response)
 }
 
+// @desc Create product
+// @route POST /api/products/
+// @access Private/Admin
+const createProduct = async (req, res) => {
+  const { name, image, brand, category, description, numReviews, price, rating, countInStock } = req.body  
+
+  const product = new Product({
+    user: req.user._id, name, image, brand, category, description, numReviews, price, rating, countInStock
+  })
+
+  const createdProduct = await product.save()  
+
+  res.status(201).json(createdProduct)
+}
+
+// @desc Update product
+// @route PUT /api/products/:id
+// @access Private/Admin
+const updateProductById = async (req, res) => {
+  const { name, image, brand, category, description, numReviews, price, countInStock } = req.body
+
+  const product = await Product.findById(req.params.id)
+
+  if(product) {
+    product.name = name || product.name
+    product.image = image || product.image
+    product.brand = brand || product.brand
+    product.category = category || product.category
+    product.description = description || product.description
+    product.numReviews = numReviews || product.numReviews
+    product.price = price || product.price
+    product.countInStock = countInStock || product.countInStock
+
+    const updatedProduct = await product.save()
+    res.json(updatedProduct)
+
+  } else {
+    res.status(404)
+    throw new Error('Product not found')
+  }
+
+  
+
+  res.status(201).json(updatedProduct)
+}
 export {
   getProducts,
   getProductById,
-  deleteProduct
+  deleteProduct,
+  createProduct,
+  updateProductById
 }
