@@ -11,8 +11,8 @@ const UserListScreen = () => {
 
   const [deleteUserById, { isLoading: deleteUserIsLoading, isError, error: deleteUserError }] = useDeleteUserByIdMutation()
 
-  const deleteHandler = (id) => {
-    deleteUserById(id)
+  const deleteHandler = async (id) => {
+    await deleteUserById(id)
   }
 
   return (
