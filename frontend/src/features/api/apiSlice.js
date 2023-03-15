@@ -18,9 +18,18 @@ export const api = createApi({
   endpoints: build => ({
     getProducts: build.query({
       query: () => '/api/products',
+      providesTags: ['Product']
     }),
     getProductById: build.query({
-      query: productId => `/api/products/${productId}`
+      query: productId => `/api/products/${productId}`,
+      providesTags: ['Product']
+    }),
+    deleteProductById: build.mutation({
+      query: (id) => ({
+        url: `/api/products/${id}`,
+        method: 'DELETE'
+      }),
+      invalidatesTags: ['Product']
     }),
     login: build.mutation({
       query: (credentials) => ({
@@ -104,5 +113,6 @@ export const { useGetProductsQuery,
   useGetUserOrdersQuery,
   useGetAllUsersQuery,
   useDeleteUserByIdMutation,
-  useUpdateUserByIdMutation
+  useUpdateUserByIdMutation,
+  useDeleteProductByIdMutation
 } = api
