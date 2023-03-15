@@ -43,7 +43,7 @@ export const api = createApi({
         body: updatedUserInfo
       })
     }),
-    getUserProfile: build.query({
+    getUserById: build.query({
       query: (id) => `/api/users/${id}`,
       providesTags: ['User']
     }),
@@ -80,6 +80,14 @@ export const api = createApi({
         method: 'DELETE'
       }),
       invalidatesTags: ['User']
+    }),
+    updateUserById: build.mutation({
+      query: ({updatedUser, id}) => ({
+        url: `/api/users/${id}`,
+        method: 'PUT',
+        body: updatedUser
+      }),
+      invalidatesTags: ['User']
     })
   })
 })
@@ -88,12 +96,13 @@ export const { useGetProductsQuery,
   useGetProductByIdQuery,
   useLoginMutation,
   useRegisterMutation,
-  useGetUserProfileQuery,
+  useGetUserByIdQuery,
   useUpdateUserProfileMutation,
   useAddOrderMutation,
   useGetOrderByIdQuery,
   useUpdateOrderToPaidMutation,
   useGetUserOrdersQuery,
   useGetAllUsersQuery,
-  useDeleteUserByIdMutation
+  useDeleteUserByIdMutation,
+  useUpdateUserByIdMutation
 } = api
