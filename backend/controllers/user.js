@@ -76,6 +76,46 @@ const getUserProfile = async (req, res) => {
   }
 }
 
+// @desc Get user by Id
+// @route GET /api/users/:id
+// @access Private/Admin
+const getUserById = async (req, res) => {
+  const user = await User.findById(req.params.id)
+
+  if (user) {
+    res.json(user)
+  } else {
+    res.status(404)
+    throw new Error('User not found')
+  }
+}
+
+// @desc Update user by Id
+// @route PUT /api/users/:id
+// @access Private/Admin
+const updateUserById = async (req, res) => {
+  const user = await User.findById(req.params.id)
+
+  if (user) {
+    user.name = req.body.name || user.name
+    user.email = req.body.email || user.email
+    user.isAdmin = (req.body.isAdmin === true || req.body.isAdmin === false) ? req.body.isAdmin : user.isAdmin
+
+    const updatedUser = await user.save()
+
+    res.json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      isAdmin: updatedUser.isAdmin,      
+    })
+
+  } else {
+    res.status(404)
+    throw new Error('User not found')
+  }
+}
+
 // @desc Update user profile
 // @route PUT /api/users/profile
 // @access Private
@@ -87,8 +127,7 @@ const updateUserProfile = async (req, res) => {
   if (user) {
     user.name = req.body.name || user.name
     user.email = req.body.email || user.email
-    if(req.body.password){
-      console.log(req.body.password, user.passwordHash)
+    if(req.body.password){      
       user.passwordHash = req.body.password
     }
 
@@ -98,8 +137,7 @@ const updateUserProfile = async (req, res) => {
       _id: updatedUser._id,
       name: updatedUser.name,
       email: updatedUser.email,
-      isAdmin: updatedUser.isAdmin,
-      token: generateToken(updatedUser._id)
+      isAdmin: updatedUser.isAdmin,      
     })
 
   } else {
@@ -133,4 +171,4 @@ const deleteUser = async (req, res) => {
   res.json(response)
 }
 
-export { authUser, registerUser , getUserProfile, updateUserProfile, getAllUsers, deleteUser }
+export { authUser, registerUser , getUserProfile, updateUserProfile, getAllUsers, deleteUser, getUserById, updateUserById }
