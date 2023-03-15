@@ -16,6 +16,7 @@ import AdminOnlyRoute from './utils/AdminOnlyRoute'
 import OrderScreen from './screens/OrderScreen'
 import UserListScreen from './screens/UserListScreen'
 import UserEditScreen from './screens/UserEditScreen'
+import ProductListScreen from './screens/ProductListScreen'
 import { PayPalScriptProvider } from '@paypal/react-paypal-js'
 
 
@@ -45,6 +46,7 @@ const App = () => {
             <Route path='/cart/' element={<CartScreen />} />
             <Route path='/admin/userlist' element={<AdminOnlyRoute><UserListScreen /></AdminOnlyRoute>} />
             <Route path='/admin/user/:id/edit' element={<AdminOnlyRoute><UserEditScreen /></AdminOnlyRoute>} />
+            <Route path='/admin/productlist' element={<AdminOnlyRoute><ProductListScreen /></AdminOnlyRoute>} />
           </Routes>
         </Container>
       </main>
