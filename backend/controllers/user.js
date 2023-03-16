@@ -166,9 +166,6 @@ const deleteUser = async (req, res) => {
   }else {
     throw new Error('User not found')
   }
-  
-  
-  res.json(response)
 }
 
 export { authUser, registerUser , getUserProfile, updateUserProfile, getAllUsers, deleteUser, getUserById, updateUserById }

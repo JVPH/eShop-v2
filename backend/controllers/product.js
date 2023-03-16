@@ -31,9 +31,6 @@ const deleteProduct = async (req, res) => {
   } else {
     throw new Error('Product not found')
   }
-
-
-  res.json(response)
 }
 
 // @desc Create product
@@ -76,10 +73,6 @@ const updateProductById = async (req, res) => {
     res.status(404)
     throw new Error('Product not found')
   }
-
-  
-
-  res.status(201).json(updatedProduct)
 }
 export {
   getProducts,
