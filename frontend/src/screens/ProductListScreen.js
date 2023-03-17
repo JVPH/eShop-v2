@@ -1,7 +1,6 @@
-import { useDeleteProductByIdMutation } from '../features/api/apiSlice'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Table, Button, Row, Col, Modal } from 'react-bootstrap'
-import { useGetProductsQuery } from '../features/api/apiSlice'
+import { useGetProductsQuery, useDeleteProductByIdMutation, useCreateProductMutation } from '../features/api/apiSlice'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 
@@ -11,17 +10,19 @@ const ProductListScreen = () => {
 
   const [deleteProductById, { isLoading: deleteProductIsLoading, isError, error: deleteProductError }] = useDeleteProductByIdMutation()
 
+  const [createProduct, { isLoading: createProductIsLoading, error: createProductError }] = useCreateProductMutation()
+
   const deleteHandler = async (id) => {
     await deleteProductById(id)
   }
 
-  const createProductHandler = () => {
-    console.log('creating...')
+  const createProductHandler = async () => {
+    await createProduct()
   }
 
   return (
     <>
-      <Row className='align-items-center'>
+      <Row>
         <Col>
           <h1>Products</h1>
         </Col>
