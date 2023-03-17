@@ -31,6 +31,21 @@ export const api = createApi({
       }),
       invalidatesTags: ['Product']
     }),
+    createProduct: build.mutation({
+      query: () => ({
+        url: '/api/products',
+        method: 'POST',
+      }),
+      invalidatesTags: ['Product']
+    }),
+    updateProductById: build.mutation({
+      query: ({ updatedProductInfo, productId }) => ({
+        url: `/api/products/${productId}`,
+        method: 'PUT',
+        body: updatedProductInfo
+      }),
+      invalidatesTags: ['Product']
+    }),
     login: build.mutation({
       query: (credentials) => ({
         url: '/api/users/login',
@@ -50,10 +65,15 @@ export const api = createApi({
         url: '/api/users/profile',
         method: 'PUT',
         body: updatedUserInfo
-      })
+      }),
+      invalidatesTags: ['User']
     }),
     getUserById: build.query({
       query: (id) => `/api/users/${id}`,
+      providesTags: ['User']
+    }),
+    getUserProfile: build.query({
+      query: () => '/api/users/profile',
       providesTags: ['User']
     }),
     addOrder: build.mutation({
@@ -114,5 +134,8 @@ export const { useGetProductsQuery,
   useGetAllUsersQuery,
   useDeleteUserByIdMutation,
   useUpdateUserByIdMutation,
-  useDeleteProductByIdMutation
+  useDeleteProductByIdMutation,
+  useCreateProductMutation,
+  useUpdateProductByIdMutation,
+  useGetUserProfileQuery
 } = api
