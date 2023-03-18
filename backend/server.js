@@ -1,3 +1,4 @@
+import path from 'path'
 import dotenv from 'dotenv'
 import 'express-async-errors'
 import express from 'express'
@@ -7,6 +8,7 @@ import connectDB from './config/db.js'
 import productRouter from './routes/product.js'
 import userRouter from './routes/user.js'
 import orderRouter from './routes/order.js'
+import uploadRouter from './routes/upload.js'
 
 dotenv.config()
 
@@ -25,6 +27,12 @@ app.use('/api/products', productRouter)
 app.use('/api/users', userRouter)
 
 app.use('/api/orders', orderRouter)
+
+app.use('/api/upload', uploadRouter)
+
+const __dirname = path.resolve()
+
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
 
 app.use(unknownEndpoint)
 
