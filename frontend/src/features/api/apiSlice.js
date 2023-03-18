@@ -46,6 +46,16 @@ export const api = createApi({
       }),
       invalidatesTags: ['Product']
     }),
+    uploadProductImage: build.mutation({
+      query: (formData) => ({
+        url: '/api/upload',
+        method: 'POST',
+        body: formData,
+        // headers: {
+        //   'Content-Type': 'multipart/form-data'
+        // }
+      })
+    }),
     login: build.mutation({
       query: (credentials) => ({
         url: '/api/users/login',
@@ -137,5 +147,6 @@ export const { useGetProductsQuery,
   useDeleteProductByIdMutation,
   useCreateProductMutation,
   useUpdateProductByIdMutation,
-  useGetUserProfileQuery
+  useGetUserProfileQuery,
+  useUploadProductImageMutation
 } = api

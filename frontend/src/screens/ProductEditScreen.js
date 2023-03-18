@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useUpdateProductByIdMutation, useGetProductByIdQuery } from '../features/api/apiSlice'
+import { useUpdateProductByIdMutation, useGetProductByIdQuery, useUploadProductImageMutation } from '../features/api/apiSlice'
 import { Form, Button } from 'react-bootstrap'
 import FormContainer from '../components/FormContainer'
 import { Link, useParams } from 'react-router-dom'
@@ -59,6 +59,28 @@ const ProductEditScreen = () => {
     }
   }
 
+  const [uploadProductImage, { isSuccess: uploadProductIsSuccess, error: uploadProductImageError, data: imageData }] = useUploadProductImageMutation()
+
+  useEffect(() => {
+    if (uploadProductIsSuccess) {
+      setProduct((prevProduct) => ({
+        ...prevProduct,
+        image: imageData,
+      }))
+    }
+  }, [uploadProductIsSuccess, imageData, setProduct])
+
+  const uploadFileHandler = async (e) => {
+    try {
+      const file = e.target.files[0]
+      const formData = new FormData()
+      formData.append('image', file)
+      await uploadProductImage(formData)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
 
   return (
     <>
@@ -100,6 +122,12 @@ const ProductEditScreen = () => {
                   placeholder='Enter image'
                   value={product.image}
                   onChange={onChange}>
+                </Form.Control>
+                <Form.Control
+                  type='file'
+                  // controlid='image-file'
+                  label='Choose file'
+                  onChange={uploadFileHandler}>
                 </Form.Control>
               </Form.Group>
               <Form.Group controlId='brand' className='mb-3'>
