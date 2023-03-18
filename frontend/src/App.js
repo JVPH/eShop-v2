@@ -18,6 +18,7 @@ import UserListScreen from './screens/UserListScreen'
 import UserEditScreen from './screens/UserEditScreen'
 import ProductEditScreen from './screens/ProductEditScreen'
 import ProductListScreen from './screens/ProductListScreen'
+import OrderListScreen from './screens/OrderListScreen'
 import { PayPalScriptProvider } from '@paypal/react-paypal-js'
 
 
@@ -49,6 +50,7 @@ const App = () => {
             <Route path='/admin/user/:id/edit' element={<AdminOnlyRoute><UserEditScreen /></AdminOnlyRoute>} />
             <Route path='/admin/productlist' element={<AdminOnlyRoute><ProductListScreen /></AdminOnlyRoute>} />
             <Route path='/admin/product/:id/edit' element={<AdminOnlyRoute><ProductEditScreen /></AdminOnlyRoute>} />
+            <Route path='/admin/orderlist' element={<AdminOnlyRoute><OrderListScreen /></AdminOnlyRoute>} />
           </Routes>
         </Container>
       </main>
