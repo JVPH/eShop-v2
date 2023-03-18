@@ -109,6 +109,10 @@ export const api = createApi({
       query: () => '/api/orders/my-orders',
       providesTags: ['Order']
     }),
+    getAllOrders: build.query({
+      query: () => '/api/orders',
+      providesTags: ['Order']
+    }),
     getAllUsers: build.query({
       query: () => '/api/users',
       providesTags: ['User']
@@ -148,5 +152,6 @@ export const { useGetProductsQuery,
   useCreateProductMutation,
   useUpdateProductByIdMutation,
   useGetUserProfileQuery,
-  useUploadProductImageMutation
+  useUploadProductImageMutation,
+  useGetAllOrdersQuery
 } = api
