@@ -44,7 +44,7 @@ const addOrderItems = async(req, res) => {
 const getOrderById = async(req, res) => {
   const order = await Order.findById(req.params.id).populate('user', 'name email')
 
-  if (order && order.user._id.toString() === req.user._id.toString()) {
+  if ((order && order.user._id.toString() === req.user._id.toString()) || req.user.isAdmin) {
     res.json(order)
   } else {
     res.status(404)
@@ -89,9 +89,19 @@ const getMyOrders = async (req, res) => {
   res.json(orders)
 }
 
+// @desc Get order by id
+// @route GET /api/orders/
+// @access Private/Admin
+
+const getAllOrders = async (req, res) => {
+  const orders = await Order.find({}).populate('user', 'name email')
+  res.json(orders)
+}
+
 export {
   addOrderItems,
   getOrderById,
   updateOrderToPaid,
-  getMyOrders
+  getMyOrders,
+  getAllOrders
 }
