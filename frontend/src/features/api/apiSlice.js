@@ -46,6 +46,14 @@ export const api = createApi({
       }),
       invalidatesTags: ['Product']
     }),
+    createProductReview: build.mutation({
+      query: ({ rating, comment , productId }) => ({
+        url: `/api/products/${productId}/reviews`,
+        method: 'POST',
+        body: { rating, comment }
+      }),
+      invalidatesTags: ['Product']
+    }),
     uploadProductImage: build.mutation({
       query: (formData) => ({
         url: '/api/upload',
@@ -105,6 +113,13 @@ export const api = createApi({
       }),
       invalidatesTags: ['Order']
     }),
+    updateOrderToDelivered: build.mutation({
+      query: (orderId) => ({
+        url: `/api/orders/${orderId}/deliver`,
+        method: 'PUT',
+      }),
+      invalidatesTags: ['Order']
+    }),
     getUserOrders: build.query({
       query: () => '/api/orders/my-orders',
       providesTags: ['Order']
@@ -153,5 +168,7 @@ export const { useGetProductsQuery,
   useUpdateProductByIdMutation,
   useGetUserProfileQuery,
   useUploadProductImageMutation,
-  useGetAllOrdersQuery
+  useGetAllOrdersQuery,
+  useUpdateOrderToDeliveredMutation,
+  useCreateProductReviewMutation
 } = api
