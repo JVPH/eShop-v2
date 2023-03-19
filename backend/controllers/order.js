@@ -44,16 +44,18 @@ const addOrderItems = async(req, res) => {
 const getOrderById = async(req, res) => {
   const order = await Order.findById(req.params.id).populate('user', 'name email')
 
-  if ((order && order.user._id.toString() === req.user._id.toString()) || req.user.isAdmin) {
-    res.json(order)
+  if (order) {
+    if ((order && order.user._id.toString() === req.user._id.toString()) || req.user.isAdmin){
+      res.json(order)
+    }    
   } else {
     res.status(404)
     throw new Error('Order not found')
   }
 }
 
-// @desc Get order by id
-// @route GET /api/orders/:id/pay
+// @desc Update order to paid
+// @route PUT /api/orders/:id/pay
 // @access Private
 
 const updateOrderToPaid = async (req, res) => {
@@ -80,7 +82,29 @@ const updateOrderToPaid = async (req, res) => {
 
 }
 
-// @desc Get order by id
+// @desc Update order to delivered
+// @route GET /api/orders/:id/deliver
+// @access Private || Private/Admin
+
+const updateOrderToDelivered = async (req, res) => {
+  const order = await Order.findById(req.params.id)
+
+  if (order) {
+    order.isDelivered = true
+    order.deliveredAt = Date.now()    
+
+    const updatedOrder = await order.save()
+
+    res.json(updatedOrder)
+  } else {
+    res.status(404)
+    throw new Error('Order not found')
+  }
+
+
+}
+
+// @desc Get user orders
 // @route GET /api/orders/my-orders
 // @access Private
 
@@ -103,5 +127,6 @@ export {
   getOrderById,
   updateOrderToPaid,
   getMyOrders,
-  getAllOrders
+  getAllOrders,
+  updateOrderToDelivered
 }
