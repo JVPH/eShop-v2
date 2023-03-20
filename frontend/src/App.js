@@ -51,6 +51,7 @@ const App = () => {
             <Route path='/admin/productlist' element={<AdminOnlyRoute><ProductListScreen /></AdminOnlyRoute>} />
             <Route path='/admin/product/:id/edit' element={<AdminOnlyRoute><ProductEditScreen /></AdminOnlyRoute>} />
             <Route path='/admin/orderlist' element={<AdminOnlyRoute><OrderListScreen /></AdminOnlyRoute>} />
+            <Route path='/search/:keyword' element={<HomeScreen />}/>
           </Routes>
         </Container>
       </main>
