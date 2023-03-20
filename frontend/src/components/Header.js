@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { removedCredentials } from '../features/authSlice'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Nav, Navbar, Container, NavDropdown } from 'react-bootstrap'
+import SearchBox from './SearchBox'
 import { api } from '../features/api/apiSlice'
 
 const Header = () => {
@@ -23,6 +24,7 @@ const Header = () => {
           </LinkContainer>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
+            <SearchBox />
             <Nav className="ms-auto">
               <LinkContainer to={'/cart'}>
                 <Nav.Link><i className="fa-solid fa-cart-shopping"></i> Cart</Nav.Link>
