@@ -3,15 +3,18 @@ import { useGetProductsQuery } from '../features/api/apiSlice'
 import Product from '../components/Product'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
+import { useParams } from 'react-router-dom'
 
 const HomeScreen = () => {
-  const { data: products, error, isLoading } = useGetProductsQuery()
+
+  const { keyword } = useParams()
+  const { data: products, error, isLoading } = useGetProductsQuery(keyword)
 
   return (
     <>
       <h1>Latest Products</h1>
       {error ? (
-        <Message variant='danger' heading='Oh snap! You got an error!'>
+        <Message variant='danger'>
           {error.data.message}
         </Message>
       ) : isLoading ? (
