@@ -17,7 +17,7 @@ export const api = createApi({
   tagTypes: ['Product', 'User', 'Order'],
   endpoints: build => ({
     getProducts: build.query({
-      query: () => '/api/products',
+      query: (keyword = '') => `/api/products?keyword=${keyword}`,
       providesTags: ['Product']
     }),
     getProductById: build.query({
