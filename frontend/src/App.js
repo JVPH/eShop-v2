@@ -49,9 +49,12 @@ const App = () => {
             <Route path='/admin/userlist' element={<AdminOnlyRoute><UserListScreen /></AdminOnlyRoute>} />
             <Route path='/admin/user/:id/edit' element={<AdminOnlyRoute><UserEditScreen /></AdminOnlyRoute>} />
             <Route path='/admin/productlist' element={<AdminOnlyRoute><ProductListScreen /></AdminOnlyRoute>} />
+            <Route path='/admin/productlist/page/:pageNumber' element={<AdminOnlyRoute><ProductListScreen /></AdminOnlyRoute>} />
             <Route path='/admin/product/:id/edit' element={<AdminOnlyRoute><ProductEditScreen /></AdminOnlyRoute>} />
             <Route path='/admin/orderlist' element={<AdminOnlyRoute><OrderListScreen /></AdminOnlyRoute>} />
             <Route path='/search/:keyword' element={<HomeScreen />}/>
+            <Route path='/search/:keyword/page/:pageNumber' element={<HomeScreen />} />
+            <Route path='/page/:pageNumber' element={<HomeScreen />} />
           </Routes>
         </Container>
       </main>
