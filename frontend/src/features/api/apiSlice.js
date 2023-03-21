@@ -17,8 +17,11 @@ export const api = createApi({
   tagTypes: ['Product', 'User', 'Order'],
   endpoints: build => ({
     getProducts: build.query({
-      query: ({keyword = '', pageNumber = ''}) => `/api/products?keyword=${keyword}&pageNumber=${pageNumber}`
-      ,
+      query: ({keyword = '', pageNumber = ''}) => `/api/products?keyword=${keyword}&pageNumber=${pageNumber}`,
+      providesTags: ['Product']
+    }),
+    getTopProducts: build.query({
+      query: () => '/api/products/top',
       providesTags: ['Product']
     }),
     getProductById: build.query({
@@ -153,6 +156,7 @@ export const api = createApi({
 
 export const { useGetProductsQuery,
   useGetProductByIdQuery,
+  useGetTopProductsQuery,
   useLoginMutation,
   useRegisterMutation,
   useGetUserByIdQuery,
