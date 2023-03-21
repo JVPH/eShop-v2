@@ -1,4 +1,5 @@
 import { useParams } from 'react-router-dom'
+import SEO from '../components/SEO'
 import { useGetProductByIdQuery, useCreateProductReviewMutation } from '../features/api/apiSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { addedToCart } from '../features/cartSlice'
@@ -52,6 +53,12 @@ const ProductScreen = () => {
 
   return (
     <>
+      <SEO
+        title={product.name}
+        description='Enjoy low prices and great deals on a large selection of electronics'
+        name={product.name}
+        type='product'
+      />
       <Row className='mt-5'>
         <Col md={6} >
           <Image src={product.image} alt={product.name} fluid/>

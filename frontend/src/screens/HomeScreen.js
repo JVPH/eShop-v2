@@ -1,4 +1,5 @@
 import { Row, Col } from 'react-bootstrap'
+import SEO from '../components/SEO'
 import { useGetProductsQuery } from '../features/api/apiSlice'
 import Product from '../components/Product'
 import Message from '../components/Message'
@@ -15,6 +16,12 @@ const HomeScreen = () => {
 
   return (
     <>
+      <SEO
+        title='Welcome to eShop'
+        description='Enjoy low prices and great deals on a large selection of electronics'
+        name='eShop'
+        type='summary'
+      />
       {!keyword ? (
         <ProductCarousel />
       ) : (
