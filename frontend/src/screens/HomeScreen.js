@@ -4,6 +4,8 @@ import Product from '../components/Product'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import Paginate from '../components/Paginate'
+import { Link } from 'react-router-dom'
+import ProductCarousel from '../components/ProductCarousel'
 import { useParams } from 'react-router-dom'
 
 const HomeScreen = () => {
@@ -13,7 +15,14 @@ const HomeScreen = () => {
 
   return (
     <>
-      <h1>Latest Products</h1>
+      {!keyword ? (
+        <ProductCarousel />
+      ) : (
+        <Link to='/' className='btn btn-light'>
+          Go Back
+        </Link>
+      )}
+      <h1 className='mt-3'>Latest Products</h1>
       {error ? (
         <Message variant='danger'>
           {error.message}
