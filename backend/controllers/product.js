@@ -3,7 +3,7 @@ import Product from '../models/product.js'
 //@route GET /api/products
 //@access Public
 const getProducts = async (req, res) => {
-  const pageSize = 2
+  const pageSize = 8
   const page = Number(req.query.pageNumber) || 1
   const keyword = req.query.keyword ? {
     name: {
@@ -27,6 +27,14 @@ const getProductById = async (req, res) => {
     res.status(404)
     throw new Error('Product not found')
   }
+}
+
+// @desc GET top rated products
+// @route GET /api/products/top
+// @access Public
+const getTopProducts = async (req, res) => {
+  const products = await Product.find({}).sort({ rating: -1 }).limit(3)
+  res.json(products)
 }
 
 // @desc Delete product
@@ -131,5 +139,6 @@ export {
   deleteProduct,
   createProduct,
   updateProductById,
-  createProductReview
+  createProductReview,
+  getTopProducts
 }
