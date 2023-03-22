@@ -28,9 +28,9 @@ morgan.token('data', (req, _res) => {
 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :data'))
 
-app.get('/', (req, res) => {
-  res.send('Api is running...')
-})
+// app.get('/', (req, res) => {
+//   res.send('Api is running...')
+// })
 
 app.use('/api/products', productRouter)
 
@@ -41,6 +41,8 @@ app.use('/api/orders', orderRouter)
 app.use('/api/upload', uploadRouter)
 
 const __dirname = path.resolve()
+
+app.use(express.static(path.join(__dirname, '/backend/build')))
 
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
 
