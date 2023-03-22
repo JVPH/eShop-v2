@@ -17,8 +17,6 @@ connectDB()
 
 const app = express()
 
-const __dirname = path.resolve()
-
 app.use(express.json())
 
 morgan.token('data', (req, _res) => {
@@ -27,12 +25,6 @@ morgan.token('data', (req, _res) => {
   }
   return JSON.stringify(req.body)
 })
-
-if (process.env.NODE_ENV === 'production'){
-  app.use(express.static(path.join(__dirname, '/backend/build')))
-  //route to match any GET request to any URL path
-  app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, 'backend', 'build', 'index.html')))
-}
 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :data'))
 
@@ -48,11 +40,15 @@ app.use('/api/orders', orderRouter)
 
 app.use('/api/upload', uploadRouter)
 
-
-
-
+const __dirname = path.resolve()
 
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '/backend/build')))
+  //route to match any GET request to any URL path
+  app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, 'backend', 'build', 'index.html')))
+}
 
 app.use(unknownEndpoint)
 
