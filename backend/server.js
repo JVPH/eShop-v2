@@ -19,14 +19,16 @@ const app = express()
 
 app.use(express.json())
 
-morgan.token('data', (req, _res) => {
-  if (Object.keys(req.body).length === 0) {
-    return '-'
-  }
-  return JSON.stringify(req.body)
-})
+if(process.env.NODE_ENV === 'development') {
+  morgan.token('data', (req, _res) => {
+    if (Object.keys(req.body).length === 0) {
+      return '-'
+    }
+    return JSON.stringify(req.body)
+  })
 
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms :data'))
+  app.use(morgan(':method :url :status :res[content-length] - :response-time ms :data'))
+}
 
 // app.get('/', (req, res) => {
 //   res.send('Api is running...')
