@@ -1,5 +1,6 @@
 import { Offcanvas, Button, Col, Row, Form, Image, ListGroup } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Message from './Message'
 import { useDispatch, useSelector } from 'react-redux'
 import { updatedQuantity, removedFromCart } from '../features/cartSlice'
@@ -8,20 +9,25 @@ import { updatedQuantity, removedFromCart } from '../features/cartSlice'
 const CartOffCanvas = ({ show, onHide }) => {
 
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const { cartItems } = useSelector((state) => state.cart)
 
   const removeFromCartHandler = (id) => {
     dispatch(removedFromCart(id))
   }
 
+  const checkoutHandler = () => {
+    navigate('/shipping')
+  }
+
   return (
     <>
       <Offcanvas placement='end' show={show} onHide={onHide}>
         <Offcanvas.Header closeButton>
-          <Offcanvas.Title>Offcanvas</Offcanvas.Title>
+          <Offcanvas.Title>Shopping Cart</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          <h1>Shopping Cart</h1>
+          {/* <h1>Shopping Cart</h1> */}
           {cartItems.length === 0 ? <Message>Your cart is empty <Link to='/'>Go Back</Link></Message> : (
             <ListGroup variant='flush'>
               {cartItems.map(item => (
@@ -53,6 +59,13 @@ const CartOffCanvas = ({ show, onHide }) => {
                   </Row>
                 </ListGroup.Item>
               ))}
+              <ListGroup.Item>
+                <div className='d-grid gap-2'>
+                  <Button type='button' className='btn-block' disabled={cartItems.length === 0} onClick={checkoutHandler}>
+                    Proceed to checkout
+                  </Button>
+                </div>
+              </ListGroup.Item>
             </ListGroup>
           )}
         </Offcanvas.Body>
