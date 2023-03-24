@@ -1,7 +1,7 @@
 # eShop
 
 E-Commerce website project using the MERN stack and Redux Toolkit.
-Live at: https://eshop-8943.onrender.com/
+Live at: https://eshop-ozlz.onrender.com
 
 ![homescreen](https://user-images.githubusercontent.com/83098530/226803208-62b2e12e-99ec-4350-9bb6-9d4cdce4f848.png)
 *Homescreen*
