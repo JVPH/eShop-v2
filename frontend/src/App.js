@@ -19,15 +19,8 @@ import UserEditScreen from './screens/UserEditScreen'
 import ProductEditScreen from './screens/ProductEditScreen'
 import ProductListScreen from './screens/ProductListScreen'
 import OrderListScreen from './screens/OrderListScreen'
-import { PayPalScriptProvider } from '@paypal/react-paypal-js'
-
 
 const App = () => {
-  const initialOptions = {
-    'client-id': process.env.REACT_APP_PAYPAL_CLIENT_ID,
-    currency: 'USD',
-    intent: 'capture',
-  }
 
   return (
     <BrowserRouter>
@@ -35,7 +28,7 @@ const App = () => {
       <main className='main py-3'>
         <Container>
           <Routes>
-            <Route path='/order/:id' element={<PrivateRoute><PayPalScriptProvider options={initialOptions}><OrderScreen /></PayPalScriptProvider></PrivateRoute>} />
+            <Route path='/order/:id' element={<PrivateRoute><OrderScreen /></PrivateRoute>} />
             <Route path='/placeorder' element={<PlaceOrderScreen />} />
             <Route path='/register' element={<RegisterScreen />} />
             <Route path='/login' element={<LoginScreen />} />

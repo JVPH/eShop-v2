@@ -3,7 +3,8 @@ import { useSelector } from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { Link } from 'react-router-dom'
-import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js'
+import { PayPalScriptProvider } from '@paypal/react-paypal-js'
+import Paypal from '../components/Paypal'
 import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap'
 import { useGetOrderByIdQuery, useUpdateOrderToPaidMutation, useUpdateOrderToDeliveredMutation } from '../features/api/apiSlice'
 
@@ -17,9 +18,13 @@ const OrderScreen = () => {
 
   const [updateOrderToPaid, { data: updatedOrder, error: errorPay, isSuccess }] = useUpdateOrderToPaidMutation()
 
-  const [updateOrderToDelivered, { data: updatedOrderToDelivered, error: errorDeliver, isSuccess: isSuccessDeliver }] = useUpdateOrderToDeliveredMutation()
+  const [updateOrderToDelivered, { data: updatedOrderToDelivered, error: errorDeliver, isSuccess: isSuccessDeliver }] = useUpdateOrderToDeliveredMutation()  
 
-  const [{ options, isPending }, dispatch] = usePayPalScriptReducer()
+  const initialOptions = {
+    'client-id': process.env.REACT_APP_PAYPAL_CLIENT_ID,
+    currency: 'USD',
+    intent: 'capture',
+  }
 
   const paypalSuccessHandler = (paymentResult) => {
     updateOrderToPaid({ orderId: orderDetails._id, paymentResult })
@@ -117,32 +122,7 @@ const OrderScreen = () => {
                     </Row>
                   </ListGroup.Item>
                   {!orderDetails.isPaid && (
-                    isPending ? <Loader />: (
-                      <ListGroup.Item>
-                        <PayPalButtons
-                          style={{ layout: 'vertical' }}
-                          createOrder={(data, actions) => {
-                            return actions.order.create({
-                              purchase_units: [
-                                {
-                                  amount: {
-                                    value: `${orderDetails.totalPrice}`,
-                                  },
-                                },
-                              ],
-                            })
-                          }}
-                          onApprove={(data, actions) => {
-                            return actions.order.capture().then((details) => {
-                              console.log(details)
-                              paypalSuccessHandler(details)
-                              // const name = details.payer.name.given_name
-                              // alert(`Transaction completed by ${name}`)
-                            })
-                          }}
-                        />
-                      </ListGroup.Item>
-                    )
+                    <PayPalScriptProvider options={initialOptions}><Paypal paypalSuccessHandler={paypalSuccessHandler} orderDetails={orderDetails} /></PayPalScriptProvider>
                   )
                   }
                   {userInfo && userInfo.isAdmin && orderDetails.isPaid && !orderDetails.isDelivered && (
