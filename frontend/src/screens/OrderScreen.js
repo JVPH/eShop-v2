@@ -26,8 +26,8 @@ const OrderScreen = () => {
     intent: 'capture',
   }
 
-  const paypalSuccessHandler = (paymentResult) => {
-    updateOrderToPaid({ orderId: orderDetails._id, paymentResult })
+  const paypalSuccessHandler = async (paymentResult) => {
+    await updateOrderToPaid({ orderId: orderDetails._id, paymentResult })
   }
 
   const deliverHandler = async () => {
