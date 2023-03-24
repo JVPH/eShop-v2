@@ -3,17 +3,21 @@ import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
 import CheckoutSteps from '../components/CheckoutSteps'
 import FormContainer from '../components/FormContainer'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useAddOrderMutation } from '../features/api/apiSlice'
 import Message from '../components/Message'
+import { emptiedCart } from '../features/cartSlice'
 
 const PlaceOrderScreen = () => {
   const { shippingAddress } = useSelector(state => state.shipping)
   const { paymentMethod } = useSelector(state => state.payment)
   const { cartItems } = useSelector(state => state.cart)
 
+
   const [addOrder, { data: order, isError, error, isSuccess }] = useAddOrderMutation()
   const navigate = useNavigate()
+
+  const dispatch = useDispatch()
 
   // Calculate prices
   const prices = {}
@@ -31,13 +35,14 @@ const PlaceOrderScreen = () => {
 
   prices.tax = Number((0.15 * prices.items).toFixed(2))
 
-  prices.total = prices.items + prices.tax + prices.shipping
+  prices.total = parseFloat((prices.items + prices.tax + prices.shipping).toFixed(2))
 
   useEffect(() => {
     if(isSuccess) {
+      dispatch(emptiedCart())
       navigate(`/order/${order._id}`)
     }
-  }, [navigate, isSuccess])
+  }, [navigate, isSuccess, dispatch])
 
   const placeOrderHandler = async () => {
     try {
@@ -133,9 +138,11 @@ const PlaceOrderScreen = () => {
                   <Col>${prices.total}</Col>
                 </Row>
               </ListGroup.Item>
-              <ListGroup.Item>
-                {isError && <Message variant='danger'>{error.data.message}</Message>}
-              </ListGroup.Item>
+              {isError && (
+                <ListGroup.Item>
+                  <Message variant='danger'>{error.data.message}</Message>
+                </ListGroup.Item>
+              )}
               <ListGroup.Item>
                 <div className='d-grid gap-2'>
                   <Button type='button' disabled={cartItems.length === 0} onClick={placeOrderHandler}>
