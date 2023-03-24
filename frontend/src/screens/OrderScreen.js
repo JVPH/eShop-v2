@@ -18,7 +18,7 @@ const OrderScreen = () => {
 
   const [updateOrderToPaid, { data: updatedOrder, error: errorPay, isSuccess }] = useUpdateOrderToPaidMutation()
 
-  const [updateOrderToDelivered, { data: updatedOrderToDelivered, error: errorDeliver, isSuccess: isSuccessDeliver }] = useUpdateOrderToDeliveredMutation()  
+  const [updateOrderToDelivered, { data: updatedOrderToDelivered, error: errorDeliver, isSuccess: isSuccessDeliver }] = useUpdateOrderToDeliveredMutation()
 
   const initialOptions = {
     'client-id': process.env.REACT_APP_PAYPAL_CLIENT_ID,
