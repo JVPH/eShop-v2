@@ -5,7 +5,7 @@ import 'express-async-errors'
 import express from 'express'
 import { unknownEndpoint, errorHandler } from './middleware/errorMiddleware.js'
 import connectDB from './config/db.js'
-
+import { getDirname } from './utils/utils.js'
 import productRouter from './routes/product.js'
 import userRouter from './routes/user.js'
 import orderRouter from './routes/order.js'
@@ -42,14 +42,15 @@ app.use('/api/orders', orderRouter)
 
 app.use('/api/upload', uploadRouter)
 
-const __dirname = path.resolve()
+const __dirname = getDirname(import.meta.url)
 
-app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
+//__dirname.split('/').slice(0, -1) =>  this is to go one folder up, since the uploads folder is in the root
+app.use('/uploads', express.static(path.join(__dirname.split('/').slice(0, -1).join('/'), '/uploads')))
 
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '/backend/build')))
+  app.use(express.static(path.join(__dirname, '/build')))
   //route to match any GET request to any URL path
-  app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, 'backend', 'build', 'index.html')))
+  app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, 'build/index.html')))
 }
 
 app.use(unknownEndpoint)
