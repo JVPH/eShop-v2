@@ -8,9 +8,11 @@ import Loader from '../components/Loader'
 
 const UserEditScreen = () => {
 
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [isAdmin, setIsAdmin] = useState(false)
+  const [ userEditForm, setUserEditForm] = useState({
+    name: '',
+    email: '',
+    isAdmin: false
+  })
 
   const { id } = useParams()
 
@@ -19,19 +21,28 @@ const UserEditScreen = () => {
 
   useEffect(() => {
     if (user) {
-      setName(user.name)
-      setEmail(user.email)
-      setIsAdmin(user.isAdmin)
+      setUserEditForm({
+        name: user.name,
+        email: user.email,
+        isAdmin: user.isAdmin
+      })
     }
   }, [user])
 
   const [updateUserById, { isLoading, isError, error }] = useUpdateUserByIdMutation()
 
+  const onChange = (e) => {
+    const { name, value } = e.target
+    setUserEditForm((prevValue) => ({
+      ...prevValue,
+      [name]: value
+    }))
+  }
+
   const submitHandler = async (e) => {
     e.preventDefault()
     try {
-      console.log(isAdmin)
-      const updatedUser = { name, email, isAdmin}
+      const updatedUser = { ...userEditForm }
       await updateUserById({ updatedUser, id })
     } catch (err) {
       console.log(err)
@@ -52,19 +63,21 @@ const UserEditScreen = () => {
               <Form.Group controlId='name' className='mb-3'>
                 <Form.Label>Name</Form.Label>
                 <Form.Control
-                  type='name'
+                  type='text'
+                  name='name'
                   placeholder='Enter name'
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}>
+                  value={userEditForm.name}
+                  onChange={onChange}>
                 </Form.Control>
               </Form.Group>
               <Form.Group controlId='email' className='mb-3'>
                 <Form.Label>Email Address</Form.Label>
                 <Form.Control
                   type='email'
+                  name='email'
                   placeholder='Enter email'
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}>
+                  value={userEditForm.email}
+                  onChange={onChange}>
                 </Form.Control>
               </Form.Group>
               <Form.Group controlId='isAdmin' className='mb-3'>
@@ -72,8 +85,8 @@ const UserEditScreen = () => {
                 <Form.Check
                   type='checkbox'
                   label='Is administrator?'
-                  checked={isAdmin}
-                  onChange={(e) => setIsAdmin(e.target.checked)}
+                  checked={userEditForm.isAdmin}
+                  onChange={onChange}
                 >
                 </Form.Check>
               </Form.Group>

@@ -9,11 +9,16 @@ import Message from '../components/Message'
 
 const RegisterScreen = () => {
 
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
+  const [registerForm, setRegisterForm] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  })
+
   const [message, setMessage] = useState(null)
+
+
   const [searchParams] = useSearchParams()
 
   const redirect = searchParams.get('redirect') || '/'
@@ -29,14 +34,23 @@ const RegisterScreen = () => {
     }
   }, [token, navigate])
 
+  const onChange = (e) => {
+    const { name, value } = e.target
+    setRegisterForm((prevValue) => ({
+      ...prevValue,
+      [name]: value
+    }))
+  }
+
   const submitHandler = async (e) => {
     e.preventDefault()
-    if(password !== confirmPassword){
-      setMessage('Password do not match')
+    if(registerForm.password !== registerForm.confirmPassword){
+      setMessage('Passwords do not match')
+      return
     }
     try {
+      const { name, email, password } = registerForm
       const result = await register({ name, email, password })
-      console.log('Result: ', result)
       if (result.data) {
         dispatch(setCredentials(result.data))
         navigate('/')
@@ -69,41 +83,45 @@ const RegisterScreen = () => {
           <Form.Label>Name</Form.Label>
           <Form.Control
             type='name'
+            name='name'
             placeholder='Enter name'
-            value={name}
-            onChange={(e) => setName(e.target.value)}>
+            value={registerForm.name}
+            onChange={onChange}>
           </Form.Control>
         </Form.Group>
         <Form.Group controlId='email'>
           <Form.Label>Email Address</Form.Label>
           <Form.Control
             type='email'
+            name='email'
             placeholder='Enter email'
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}>
+            value={registerForm.email}
+            onChange={onChange}>
           </Form.Control>
         </Form.Group>
         <Form.Group controlId='password'>
           <Form.Label>Password</Form.Label>
           <Form.Control
             type='password'
+            name='password'
             placeholder='Enter password'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}>
+            value={registerForm.password}
+            onChange={onChange}>
           </Form.Control>
         </Form.Group>
         <Form.Group controlId='confirmPassword'>
           <Form.Label>Confirm Password</Form.Label>
           <Form.Control
             type='password'
+            name='confirmPassword'
             placeholder='Confirm password'
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}>
+            value={registerForm.confirmPassword}
+            onChange={onChange}>
           </Form.Control>
         </Form.Group>
         {
           isLoading ? (
-            <Button type='submit' variant='primary' className='my-3'>
+            <Button type='submit' variant='primary' className='my-3' disabled={isLoading}>
               Sign Up
             </Button>
           ) : (

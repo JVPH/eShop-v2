@@ -11,17 +11,27 @@ const ShippingScreen = () => {
 
   const navigate = useNavigate()
 
-  const [address, setAddress] = useState(shippingAddress.address)
-  const [city, setCity] = useState(shippingAddress.city)
-  const [postalCode, setPostalCode] = useState(shippingAddress.postalCode)
-  const [country, setCountry] = useState(shippingAddress.country)
+  const [fullAddress, setFullAddress] = useState({
+    address: shippingAddress.address,
+    city: shippingAddress.city,
+    postalCode: shippingAddress.postalCode,
+    country: shippingAddress.country
+  })
 
   const dispatch = useDispatch()
 
   const submitHandler = (e) => {
     e.preventDefault()
-    dispatch(setShippingAddress({ address, city, postalCode, country }))
+    dispatch(setShippingAddress(fullAddress))
     navigate('/payment')
+  }
+
+  const onChange = (e) => {
+    const { name, value } = e.target
+    setFullAddress((prevValue) => ({
+      ...prevValue,
+      [name]: value
+    }))
   }
 
   return (
@@ -32,44 +42,48 @@ const ShippingScreen = () => {
         <Form.Group controlId='address'>
           <Form.Label>Address</Form.Label>
           <Form.Control
+            name='address'
             type='text'
             placeholder='Enter address'
-            value={address}
+            value={fullAddress.address}
             required
-            onChange={(e) => setAddress(e.target.value)}>
+            onChange={onChange}>
           </Form.Control>
         </Form.Group>
 
         <Form.Group controlId='city'>
           <Form.Label>City</Form.Label>
           <Form.Control
+            name='city'
             type='text'
             placeholder='Enter city'
-            value={city}
+            value={fullAddress.city}
             required
-            onChange={(e) => setCity(e.target.value)}>
+            onChange={onChange}>
           </Form.Control>
         </Form.Group>
 
         <Form.Group controlId='postalCode'>
           <Form.Label>Postal Code</Form.Label>
           <Form.Control
+            name='postalCode'
             type='text'
             placeholder='Enter postal code'
-            value={postalCode}
+            value={fullAddress.postalCode}
             required
-            onChange={(e) => setPostalCode(e.target.value)}>
+            onChange={onChange}>
           </Form.Control>
         </Form.Group>
 
         <Form.Group controlId='country'>
           <Form.Label>Country</Form.Label>
           <Form.Control
+            name='country'
             type='text'
             placeholder='Enter country'
-            value={country}
+            value={fullAddress.country}
             required
-            onChange={(e) => setCountry(e.target.value)}>
+            onChange={onChange}>
           </Form.Control>
         </Form.Group>
 
