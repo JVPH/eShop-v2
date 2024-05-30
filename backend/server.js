@@ -1,19 +1,12 @@
 import path from 'path'
-import dotenv from 'dotenv'
 import morgan from 'morgan'
 import 'express-async-errors'
 import express from 'express'
 import { unknownEndpoint, errorHandler } from './middleware/errorMiddleware.js'
-import connectDB from './config/db.js'
-
 import productRouter from './routes/product.js'
 import userRouter from './routes/user.js'
 import orderRouter from './routes/order.js'
 import uploadRouter from './routes/upload.js'
-
-dotenv.config()
-
-connectDB()
 
 const app = express()
 
