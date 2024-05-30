@@ -12,7 +12,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "data:import": "node backend/seeder",
     "data:destroy": "node backend/seeder -d",
-    "build:ui": "cd ./backend && rm -rf build && cd ../frontend && npm run build && cp -r build ../backend"
+    "build:ui": "cd ./backend && rm -rf build && cd ../frontend && npm run build && cp -r build ../backend",
+    "generate": "drizzle-kit generate",
+    "migrate": "drizzle-kit migrate"
   },
   "repository": {
     "type": "git",
@@ -34,7 +36,8 @@
     "mongoose": "^6.9.1",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
-    "pg": "^8.11.5"
+    "pg": "^8.11.5",
+    "prettier": "^3.2.5"
   },
   "devDependencies": {
     "@types/pg": "^8.11.6",
