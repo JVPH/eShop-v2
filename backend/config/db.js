@@ -1,23 +1,13 @@
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
+import { PG_HOST, PG_PORT, PG_USER, PG_PASSWORD, PG_DATABASE } from '../utils/config';
 
-const connectDB = async () => {
-  try {
-    const pool = new Pool({
-      host: process.env.PG_HOST,
-      port: process.env.PG_PORT,
-      user: process.env.PG_USER,
-      password: process.env.PG_PASSWORD,
-      database: process.env.PG_DATABASE,
-    });
+const pool = new Pool({
+      host: PG_HOST,
+      port: PG_PORT,
+      user: PG_USER,
+      password: PG_PASSWORD,
+      database: PG_DATABASE,
+});
 
-    const db = drizzle(pool);
-    
-    console.log(`PostgreSQL connected`);
-  } catch (error) {
-    console.error(`Error: ${error.message}`);    
-    process.exit(1);
-  }
-}
-
-export default connectDB
+export const db = drizzle(pool);
