@@ -9,6 +9,7 @@ const PG_USER = process.env.PG_USER;
 const PG_PASSWORD = process.env.PG_PASSWORD;
 const PG_DATABASE = process.env.PG_DATABASE;
 const JWT_SECRET = process.env.JWT_SECRET;
+const NODE_ENV = process.env.NODE_ENV;
 
 export {
   PORT,
@@ -18,4 +19,5 @@ export {
   PG_PASSWORD,
   PG_DATABASE,
   JWT_SECRET,
+  NODE_ENV,
 };
